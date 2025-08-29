@@ -1,0 +1,3100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>9D Dimensional Odyssey - Ultimate Journey</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000;
+            color: #0ff;
+            overflow: hidden;
+        }
+        
+        body.game-started {
+            cursor: none;
+        }
+
+        #gameCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #000428 0%, #004e92 100%);
+            transition: all 1s ease;
+            z-index: 1;
+        }
+
+        /* Dimension-specific visual themes */
+        .dim-2d { 
+            background: linear-gradient(to bottom, #87CEEB 0%, #98D8E8 50%, #B0E0E6 100%) !important; 
+        }
+        .dim-3d { 
+            background: radial-gradient(ellipse at center, #1a0033 0%, #000 70%) !important; 
+        }
+        .dim-4d { 
+            background: conic-gradient(from 0deg at 50% 50%, #001133, #440066, #001133) !important;
+            animation: timeRotate 20s linear infinite;
+        }
+        @keyframes timeRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .dim-5d { 
+            background: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff, #ff006e) !important;
+            background-size: 400% 400%;
+            animation: parallelShift 10s ease infinite;
+        }
+        @keyframes parallelShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .dim-6d { 
+            background: repeating-conic-gradient(from 0deg at 50% 50%, #00ffff 0deg 20deg, #ff00ff 20deg 40deg) !important;
+            animation: quantumPulse 5s ease-in-out infinite;
+        }
+        @keyframes quantumPulse {
+            0%, 100% { filter: hue-rotate(0deg) brightness(1); }
+            50% { filter: hue-rotate(180deg) brightness(1.5); }
+        }
+        .dim-7d { 
+            background: linear-gradient(45deg, transparent 25%, #ff006e 25% 26%, transparent 26%),
+                        linear-gradient(-45deg, transparent 25%, #3a86ff 25% 26%, transparent 26%);
+            background-size: 50px 50px;
+            animation: probabilityWave 3s linear infinite;
+        }
+        @keyframes probabilityWave {
+            from { background-position: 0 0, 0 0; }
+            to { background-position: 50px 50px, -50px -50px; }
+        }
+        .dim-8d { 
+            animation: chaosGlitch 0.5s infinite;
+        }
+        @keyframes chaosGlitch {
+            0% { filter: invert(0) hue-rotate(0deg); transform: skew(0deg); }
+            10% { filter: invert(1) hue-rotate(90deg); transform: skew(2deg); }
+            20% { filter: invert(0) hue-rotate(180deg); transform: skew(-2deg); }
+            30% { filter: invert(1) hue-rotate(270deg); transform: skew(0deg); }
+            100% { filter: invert(0) hue-rotate(360deg); transform: skew(0deg); }
+        }
+        .dim-9d { 
+            background: black !important;
+            animation: infinityBreath 2s ease-in-out infinite;
+        }
+        @keyframes infinityBreath {
+            0%, 100% { filter: brightness(0.5) contrast(2); }
+            50% { filter: brightness(2) contrast(0.5) saturate(0); }
+        }
+        .dim-god {
+            background: radial-gradient(ellipse at center, #001122 0%, #000033 50%, #000000 100%) !important;
+            animation: godLevelPulse 3s ease-in-out infinite !important;
+            position: relative;
+        }
+        .dim-god::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,215,0,0.1) 0%, transparent 50%, rgba(255,215,0,0.1) 100%);
+            animation: godGlow 4s ease-in-out infinite;
+        }
+        @keyframes godLevelPulse {
+            0%, 100% { filter: brightness(1) contrast(1.2) hue-rotate(0deg); }
+            33% { filter: brightness(1.3) contrast(1.5) hue-rotate(60deg); }
+            66% { filter: brightness(1.1) contrast(1.8) hue-rotate(-30deg); }
+        }
+        @keyframes godGlow {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* HUD */
+        .hud {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.95);
+            border: 2px solid #0ff;
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 30px #0ff;
+            min-width: 280px;
+            pointer-events: none;
+        }
+
+        .hud h3 {
+            color: #0ff;
+            margin-bottom: 15px;
+            text-shadow: 0 0 15px #0ff;
+            font-size: 1.3em;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            font-size: 0.9em;
+            padding: 5px;
+            background: rgba(0, 255, 255, 0.05);
+            border-radius: 5px;
+        }
+
+        .stat-value {
+            color: #0ff;
+            font-weight: bold;
+            text-shadow: 0 0 5px currentColor;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid #0ff;
+            margin-top: 10px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0ff, #f0f, #ff0);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        /* Player Hero Sphere */
+        .player {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 500;
+        }
+
+        .player-core {
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, #fff, #0ff);
+            border-radius: 50%;
+            box-shadow: 0 0 30px #0ff, 0 0 60px #0ff;
+            animation: playerPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes playerPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .player-ring {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: 60px;
+            height: 60px;
+            border: 2px solid #0ff;
+            border-radius: 50%;
+            animation: ringRotate 2s linear infinite;
+        }
+
+        @keyframes ringRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Bullets */
+        .bullet {
+            position: absolute;
+            width: 6px;
+            height: 15px;
+            background: linear-gradient(to top, #0ff, #fff);
+            border-radius: 50% 50% 0 0;
+            z-index: 450;
+            box-shadow: 0 0 10px #0ff;
+        }
+
+        .enemy-bullet {
+            width: 8px;
+            height: 8px;
+            background: radial-gradient(circle, #ff0, #f00);
+            border-radius: 50%;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #00ffff;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+        }
+
+        /* Collectible Orbs */
+        .orb {
+            position: absolute;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #fff, #0ff);
+            box-shadow: 0 0 20px #0ff;
+            z-index: 100;
+            animation: orbFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes orbFloat {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-15px) scale(1.1); }
+        }
+
+        /* Power-ups */
+        .powerup {
+            position: absolute;
+            width: 45px;
+            height: 45px;
+            z-index: 100;
+            animation: powerRotate 3s linear infinite;
+        }
+
+        .powerup-triple {
+            background: linear-gradient(45deg, #ff0, #0ff);
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+        }
+
+        .powerup-shield {
+            background: linear-gradient(45deg, #0f0, #0ff);
+            border-radius: 50%;
+            border: 3px solid #fff;
+        }
+
+        .powerup-rapid {
+            background: linear-gradient(45deg, #f0f, #fff);
+            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+        }
+
+        .powerup-bomb {
+            background: radial-gradient(circle, #ff0, #f00);
+            border-radius: 50%;
+            border: 2px dashed #fff;
+        }
+
+        @keyframes powerRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Enemies */
+        .enemy {
+            position: absolute;
+            z-index: 200;
+        }
+
+        .enemy-2d {
+            width: 35px;
+            height: 35px;
+            background: #f00;
+            clip-path: polygon(50% 100%, 0% 0%, 50% 20%, 100% 0%);
+            animation: fall 4s linear;
+        }
+
+        @keyframes fall {
+            from { transform: translateY(-50px); }
+            to { transform: translateY(100vh); }
+        }
+
+        .enemy-3d {
+            width: 35px;
+            height: 35px;
+            background: radial-gradient(circle, #f0f, #f00);
+            border-radius: 50%;
+            box-shadow: 0 0 20px #f00;
+        }
+
+        .enemy-4d {
+            width: 40px;
+            height: 40px;
+            background: conic-gradient(#f00, transparent, #f00);
+            border-radius: 50%;
+            animation: enemyPhase 2s linear infinite;
+        }
+
+        @keyframes enemyPhase {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.2; }
+        }
+
+        .enemy-5d {
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(45deg, #f00, #ff0);
+            border-radius: 10px;
+            animation: enemySplit 3s ease-in-out infinite;
+        }
+
+        @keyframes enemySplit {
+            0%, 100% { transform: scaleX(1); }
+            50% { transform: scaleX(-1); }
+        }
+
+        /* Shield effect */
+        .shield {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border: 3px solid #0f0;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 255, 0, 0.2), transparent);
+            transform: translate(-50%, -50%);
+            animation: shieldPulse 1s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 501;
+        }
+
+        @keyframes shieldPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.7; }
+        }
+
+        /* Explosion effect */
+        .explosion {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, #fff, #ff0, #f00, transparent);
+            border-radius: 50%;
+            animation: explode 0.5s ease-out forwards;
+            z-index: 600;
+        }
+
+        @keyframes explode {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+
+        /* Clouds for 2D */
+        .cloud {
+            position: absolute;
+            width: 80px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            z-index: 5;
+            animation: cloudDrift 20s linear infinite;
+        }
+
+        @keyframes cloudDrift {
+            from { transform: translateX(-100px); }
+            to { transform: translateX(calc(100vw + 100px)); }
+        }
+
+        /* Messages */
+        .message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #0ff;
+            text-shadow: 0 0 30px #0ff;
+            animation: messageShow 2s ease-out forwards;
+            pointer-events: none;
+            z-index: 2000;
+            text-align: center;
+        }
+
+        @keyframes messageShow {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+        }
+
+        /* Instructions */
+        .instructions {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.95);
+            border: 2px solid #0ff;
+            padding: 15px;
+            border-radius: 10px;
+            max-width: 250px;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .dim-desc {
+            color: #ff0;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        /* Power display */
+        .power-display {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .power-slot {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #0ff;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+        }
+
+        .power-active {
+            animation: powerGlow 1s ease-in-out infinite;
+            border-color: #ff0;
+        }
+
+        @keyframes powerGlow {
+            0%, 100% { box-shadow: 0 0 10px #ff0; }
+            50% { box-shadow: 0 0 30px #ff0; }
+        }
+        
+        @keyframes teleportShrink {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+        
+        @keyframes teleportGrow {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+        
+        @keyframes quantumFlicker {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.1; }
+        }
+        
+        @keyframes infinityPulse {
+            0%, 100% { transform: scale(1); opacity: 0.2; }
+            50% { transform: scale(1.5); opacity: 0.4; }
+        }
+        
+        @keyframes teleportBeam {
+            0% { opacity: 1; transform: scaleX(0); }
+            50% { opacity: 1; transform: scaleX(1); }
+            100% { opacity: 0; transform: scaleX(1); }
+        }
+        
+        @keyframes reticleTarget {
+            0% { transform: scale(2) rotate(0deg); opacity: 0; }
+            50% { transform: scale(1) rotate(180deg); opacity: 1; }
+            100% { transform: scale(0.8) rotate(360deg); opacity: 0; }
+        }
+        
+        @keyframes darkAuraPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.6; }
+        }
+        
+        @keyframes teleportPreview {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 0.4; }
+        }
+
+        /* Portals */
+        .portal {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            z-index: 80;
+        }
+
+        .portal-normal {
+            background: radial-gradient(circle, rgba(0, 255, 255, 0.8), transparent);
+            border: 3px solid #0ff;
+            animation: portalPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes portalPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* Time waves for 4D */
+        .time-wave {
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #ff0, transparent);
+            animation: waveMove 5s linear infinite;
+            z-index: 60;
+        }
+
+        @keyframes waveMove {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(100%); }
+        }
+        
+        /* Instruction Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #001122 0%, #003366 100%);
+            border: 3px solid #0ff;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 0 50px #0ff;
+        }
+        
+        .modal-title {
+            font-size: 2.5em;
+            color: #0ff;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px #0ff;
+            letter-spacing: 3px;
+        }
+        
+        .controls-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 30px 0;
+            text-align: left;
+        }
+        
+        .control-item {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #0ff;
+        }
+        
+        .control-key {
+            background: #0ff;
+            color: #000;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-right: 15px;
+            min-width: 40px;
+            text-align: center;
+        }
+        
+        .control-desc {
+            color: #fff;
+            flex: 1;
+        }
+        
+        .start-button {
+            background: linear-gradient(45deg, #0ff, #f0f);
+            color: #000;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.5em;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            margin-top: 30px;
+            box-shadow: 0 0 20px #0ff;
+            transition: all 0.3s ease;
+        }
+        
+        .start-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px #f0f;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        /* Game Over Modal */
+        .game-over-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 15000;
+            opacity: 0;
+            animation: gameOverFade 1s ease-out forwards;
+        }
+        
+        .game-over-content {
+            background: linear-gradient(135deg, #330000 0%, #660000 100%);
+            border: 3px solid #f00;
+            border-radius: 20px;
+            padding: 50px;
+            text-align: center;
+            box-shadow: 0 0 50px #f00;
+            animation: gameOverPulse 2s ease-in-out infinite;
+        }
+        
+        .game-over-title {
+            font-size: 4em;
+            color: #f00;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px #f00;
+            letter-spacing: 5px;
+            animation: gameOverGlow 1.5s ease-in-out infinite;
+        }
+        
+        .game-over-stats {
+            color: #fff;
+            font-size: 1.2em;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+        
+        .game-over-message {
+            color: #ff8888;
+            font-size: 1em;
+            margin: 30px 0;
+            font-style: italic;
+        }
+        
+        @keyframes gameOverFade {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes gameOverPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        
+        @keyframes gameOverGlow {
+            0%, 100% { text-shadow: 0 0 30px #f00; }
+            50% { text-shadow: 0 0 50px #f00, 0 0 70px #f00; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Instruction Modal -->
+    <div class="modal" id="instructionModal">
+        <div class="modal-content">
+            <h1 class="modal-title">9D DIMENSIONAL ODYSSEY</h1>
+            <p style="color: #888; margin-bottom: 30px;">Master these controls to survive the dimensional journey!</p>
+            
+            <div class="controls-grid">
+                <div class="control-item">
+                    <div class="control-key">🖱️</div>
+                    <div class="control-desc">Mouse to move & aim</div>
+                </div>
+                <div class="control-item">
+                    <div class="control-key">CLICK</div>
+                    <div class="control-desc">🎯 Shoot bullets</div>
+                </div>
+                <div class="control-item">
+                    <div class="control-key">Q</div>
+                    <div class="control-desc">⏱️ Time Stop (4D+)</div>
+                </div>
+                <div class="control-item">
+                    <div class="control-key">E</div>
+                    <div class="control-desc">🌀 Teleport (5D+)</div>
+                </div>
+                <div class="control-item">
+                    <div class="control-key">SPACE</div>
+                    <div class="control-desc">✨ Use Special Power</div>
+                </div>
+                <div class="control-item">
+                    <div class="control-key">🔶</div>
+                    <div class="control-desc">Collect orbs to advance!</div>
+                </div>
+            </div>
+            
+            <p style="color: #ff0; margin: 20px 0;">🎮 Keys are grouped together for easy access: Q-E for abilities, Space for specials!</p>
+            
+            <button class="start-button" onclick="startGame()">START GAME</button>
+        </div>
+    </div>
+    
+    <canvas id="gameCanvas"></canvas>
+    
+    <!-- Custom cursor -->
+    <div class="cursor" id="cursor"></div>
+
+    <!-- HUD -->
+    <div class="hud">
+        <h3>DIMENSION <span id="dimensionNum">2</span></h3>
+        <div class="stat">
+            <span>Score:</span>
+            <span class="stat-value" id="score">0</span>
+        </div>
+        <div class="stat">
+            <span>Orbs:</span>
+            <span class="stat-value" id="orbs">0/5</span>
+        </div>
+        <div class="stat">
+            <span>Lives:</span>
+            <span class="stat-value" id="lives">♥♥♥</span>
+        </div>
+        <div class="stat">
+            <span>Ammo:</span>
+            <span class="stat-value" id="ammo">∞</span>
+        </div>
+        <div class="stat" id="timeStopStat" style="display: none;">
+            <span>Time Stop:</span>
+            <span class="stat-value" id="timeStopCooldown">Ready</span>
+        </div>
+        <div class="stat" id="teleportStat" style="display: none;">
+            <span>Teleport:</span>
+            <span class="stat-value" id="teleportCooldown">Ready</span>
+        </div>
+        <div class="stat" id="ghostStat" style="display: none;">
+            <span>Specials:</span>
+            <span class="stat-value" id="ghostCooldown">0</span>
+        </div>
+        <div class="stat" id="darkGhostStat" style="display: none;">
+            <span>Dark Ghost:</span>
+            <span class="stat-value" id="darkGhostCooldown">Ready</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress"></div>
+        </div>
+    </div>
+
+    <!-- Power Display -->
+    <div class="power-display" id="powerDisplay"></div>
+
+    <!-- Instructions -->
+    <div class="instructions">
+        <strong style="color: #0ff;">CONTROLS</strong>
+        <div style="color: #888; font-size: 0.85em; margin-top: 8px;">
+            🖱️ Mouse to move<br>
+            🎯 Click to shoot<br>
+            ✨ Space for special<br>
+            <span id="abilityControls"></span>
+            🔶 Collect orbs to advance!
+        </div>
+        <div class="dim-desc" id="dimDesc">2D - Sky Battle</div>
+    </div>
+
+    <!-- Player -->
+    <div class="player" id="player">
+        <div class="player-ring"></div>
+        <div class="player-core"></div>
+    </div>
+
+    <script>
+        class DimensionalOdyssey {
+            constructor() {
+                this.canvas = document.getElementById('gameCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.player = {
+                    x: window.innerWidth / 2,
+                    y: window.innerHeight - 150,
+                    vx: 0,
+                    vy: 0,
+                    targetX: window.innerWidth / 2,
+                    targetY: window.innerHeight - 150,
+                    invulnerable: false,
+                    shield: false,
+                    fireRate: 1,
+                    bulletType: 'normal'
+                };
+                
+                this.dimension = 2;
+                this.score = 0;
+                this.lives = 3;
+                this.orbsCollected = 0;
+                this.orbsNeeded = 5;
+                this.ammo = -1; // Infinite
+                this.isGodLevel = false;
+                this.godLevelStartTime = 0;
+                this.godLevelDimensionCycle = 2;
+                this.godLevelCycleTimer = 0;
+                
+                this.entities = {
+                    orbs: [],
+                    enemies: [],
+                    bullets: [],
+                    enemyBullets: [],
+                    powerups: [],
+                    particles: [],
+                    portals: []
+                };
+                
+                this.activePowers = [];
+                this.mouseX = window.innerWidth / 2;
+                this.mouseY = window.innerHeight - 150;
+                this.gameTime = 0;
+                this.lastShot = 0;
+                this.canShoot = true;
+                
+                // Permanent rechargeable abilities (stay with player)
+                this.permanentAbilities = {
+                    timeStop: {
+                        cooldown: 10000, // 10 seconds
+                        lastUsed: 0,
+                        duration: 3000, // 3 seconds
+                        active: false,
+                        available: false // Unlocks in 4D
+                    },
+                    teleport: {
+                        cooldown: 8000, // 8 seconds
+                        lastUsed: 0,
+                        active: false,
+                        available: false // Unlocks in 5D
+                    }
+                };
+                
+                // Special power queue system (max 5 powers)
+                this.specialPowerQueue = []; // Start with no specials
+                this.maxSpecialPowers = 5;
+                
+                // Dimension settings
+                this.dimensions = {
+                    2: {
+                        name: "2D - Sky Battle",
+                        desc: "Shoot enemies & collect orbs!",
+                        bgClass: 'dim-2d',
+                        playerLocked: 'vertical'
+                    },
+                    3: {
+                        name: "3D - Space Arena",
+                        desc: "360° combat zone",
+                        bgClass: 'dim-3d',
+                        playerLocked: false
+                    },
+                    4: {
+                        name: "4D - Time Wars",
+                        desc: "Bullets travel through time",
+                        bgClass: 'dim-4d',
+                        playerLocked: false
+                    },
+                    5: {
+                        name: "5D - Split Reality",
+                        desc: "Fight in parallel worlds",
+                        bgClass: 'dim-5d',
+                        playerLocked: false
+                    },
+                    6: {
+                        name: "6D - Quantum Combat",
+                        desc: "Bullets exist everywhere",
+                        bgClass: 'dim-6d',
+                        playerLocked: false
+                    },
+                    7: {
+                        name: "7D - Probability Field",
+                        desc: "Maybe you'll hit, maybe not",
+                        bgClass: 'dim-7d',
+                        playerLocked: false
+                    },
+                    8: {
+                        name: "8D - Chaos Realm",
+                        desc: "Nothing makes sense!",
+                        bgClass: 'dim-8d',
+                        playerLocked: false
+                    },
+                    9: {
+                        name: "9D - Infinite War",
+                        desc: "All dimensions at once",
+                        bgClass: 'dim-9d',
+                        playerLocked: false
+                    },
+                    10: {
+                        name: "GOD LEVEL - Eternal Odyssey",
+                        desc: "Infinite power, infinite challenge",
+                        bgClass: 'dim-god',
+                        playerLocked: false
+                    }
+                };
+                
+                this.init();
+                this.updatePowerDisplay(); // Initialize power display
+            }
+
+            init() {
+                this.resizeCanvas();
+                window.addEventListener('resize', () => this.resizeCanvas());
+                window.addEventListener('mousemove', (e) => this.handleMouseMove(e));
+                window.addEventListener('click', (e) => this.handleClick(e));
+                window.addEventListener('keydown', (e) => this.handleKeyDown(e));
+                
+                this.setupDimension();
+                this.startGameLoop();
+            }
+
+            resizeCanvas() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+            }
+
+            handleMouseMove(e) {
+                this.mouseX = e.clientX;
+                this.mouseY = e.clientY;
+                
+                // Update cursor
+                const cursor = document.getElementById('cursor');
+                cursor.style.left = (e.clientX - 10) + 'px';
+                cursor.style.top = (e.clientY - 10) + 'px';
+                
+                // Set player target
+                const dim = this.dimensions[this.dimension];
+                
+                if (dim.playerLocked === 'vertical') {
+                    // 2D - only horizontal movement
+                    this.player.targetX = e.clientX;
+                    this.player.targetY = window.innerHeight - 150;
+                } else {
+                    // Free movement
+                    this.player.targetX = e.clientX;
+                    this.player.targetY = e.clientY;
+                }
+            }
+
+            handleClick(e) {
+                this.shoot();
+            }
+
+            handleKeyDown(e) {
+                if (e.key === ' ') {
+                    e.preventDefault();
+                    this.useNextSpecialPower();
+                } else if (e.key.toLowerCase() === 'q' && this.permanentAbilities.timeStop.available) {
+                    e.preventDefault();
+                    this.useTimeStop();
+                } else if (e.key.toLowerCase() === 'e' && this.permanentAbilities.teleport.available) {
+                    e.preventDefault();
+                    this.useTeleport();
+                }
+            }
+
+            shoot() {
+                if (!this.canShoot) return;
+                
+                const now = Date.now();
+                const fireDelay = 200 / this.player.fireRate;
+                
+                if (now - this.lastShot < fireDelay) return;
+                this.lastShot = now;
+                
+                if (this.player.bulletType === 'triple') {
+                    // Triple shot
+                    for (let i = -1; i <= 1; i++) {
+                        this.createBullet(this.player.x + i * 15, this.player.y - 20, i * 2, -10);
+                    }
+                } else if (this.player.bulletType === 'bomb') {
+                    // Bomb shot
+                    this.createBullet(this.player.x, this.player.y - 20, 0, -5, 'bomb');
+                } else {
+                    // Normal shot
+                    this.createBullet(this.player.x, this.player.y - 20, 0, -10);
+                }
+            }
+
+            createBullet(x, y, vx, vy, type = 'normal') {
+                const bullet = document.createElement('div');
+                bullet.className = 'bullet';
+                if (type === 'bomb') {
+                    bullet.style.width = '15px';
+                    bullet.style.height = '15px';
+                    bullet.style.background = 'radial-gradient(circle, #ff0, #f00)';
+                    bullet.style.borderRadius = '50%';
+                }
+                bullet.style.left = x + 'px';
+                bullet.style.top = y + 'px';
+                document.body.appendChild(bullet);
+                
+                this.entities.bullets.push({
+                    element: bullet,
+                    x: x,
+                    y: y,
+                    vx: vx,
+                    vy: vy,
+                    type: type
+                });
+            }
+
+            useNextSpecialPower() {
+                if (this.specialPowerQueue.length === 0) {
+                    // Silently do nothing if no powers available
+                    return;
+                }
+                
+                // Use the first power in queue
+                const powerType = this.specialPowerQueue.shift();
+                this.activateSpecialPower(powerType);
+                this.updatePowerDisplay();
+            }
+            
+            activateSpecialPower(powerType) {
+                switch(powerType) {
+                    case 'ghost':
+                        this.activateGhostMode();
+                        break;
+                    case 'darkGhost':
+                        this.activateDarkGhostMode();
+                        break;
+                    case 'screenClear':
+                        this.screenBomb();
+                        break;
+                    case 'shield':
+                        this.activateShield();
+                        break;
+                    case 'rapidFire':
+                        this.activateRapidFire();
+                        break;
+                }
+            }
+            
+            activateRapidFire() {
+                this.player.fireRate = 4;
+                this.showMessage('RAPID FIRE!');
+                setTimeout(() => {
+                    this.player.fireRate = 1;
+                }, 8000);
+            }
+            
+            addSpecialPower(powerType) {
+                if (this.specialPowerQueue.length >= this.maxSpecialPowers) {
+                    // Remove last power if queue is full
+                    this.specialPowerQueue.pop();
+                }
+                
+                // Add new power to the beginning of queue
+                this.specialPowerQueue.unshift(powerType);
+                this.updatePowerDisplay();
+                
+                const powerNames = {
+                    'ghost': 'GHOST',
+                    'darkGhost': 'DARK GHOST',
+                    'screenClear': 'SCREEN CLEAR',
+                    'shield': 'SHIELD',
+                    'rapidFire': 'RAPID FIRE'
+                };
+                
+                this.showMessage(powerNames[powerType] + ' POWER ADDED!');
+            }
+
+            screenBomb() {
+                // Create explosion effect
+                const explosion = document.createElement('div');
+                explosion.className = 'explosion';
+                explosion.style.left = this.player.x + 'px';
+                explosion.style.top = this.player.y + 'px';
+                explosion.style.width = '100vw';
+                explosion.style.height = '100vh';
+                explosion.style.left = '0';
+                explosion.style.top = '0';
+                document.body.appendChild(explosion);
+                setTimeout(() => explosion.remove(), 500);
+                
+                // Destroy all enemies
+                this.entities.enemies.forEach(enemy => {
+                    this.destroyEnemy(enemy);
+                });
+                this.entities.enemies = [];
+                
+                this.showMessage('SCREEN CLEAR!');
+            }
+
+            // Removed old timeFreeze method - now handled by useSpaceAction
+            
+            dimensionSpecial() {
+                if (this.dimension === 3) {
+                    // Shield burst
+                    this.activateShield();
+                    this.showMessage('SHIELD BURST!');
+                } else if (this.dimension === 4) {
+                    // Energy wave
+                    this.energyWave();
+                } else if (this.dimension >= 5) {
+                    // Orb magnet
+                    this.orbMagnet();
+                }
+            }
+            
+            energyWave() {
+                // Create expanding energy wave
+                const wave = document.createElement('div');
+                wave.style.position = 'absolute';
+                wave.style.left = this.player.x + 'px';
+                wave.style.top = this.player.y + 'px';
+                wave.style.width = '20px';
+                wave.style.height = '20px';
+                wave.style.border = '3px solid #0ff';
+                wave.style.borderRadius = '50%';
+                wave.style.transform = 'translate(-50%, -50%)';
+                wave.style.pointerEvents = 'none';
+                wave.style.zIndex = '600';
+                document.body.appendChild(wave);
+                
+                let scale = 1;
+                const animate = () => {
+                    scale += 0.3;
+                    wave.style.transform = 'translate(-50%, -50%) scale(' + scale + ')';
+                    wave.style.opacity = Math.max(0, 1 - scale / 15);
+                    
+                    // Push enemies away
+                    this.entities.enemies.forEach(enemy => {
+                        const dist = Math.sqrt(
+                            Math.pow(enemy.x - this.player.x, 2) + 
+                            Math.pow(enemy.y - this.player.y, 2)
+                        );
+                        if (dist < scale * 20) {
+                            const angle = Math.atan2(enemy.y - this.player.y, enemy.x - this.player.x);
+                            enemy.vx += Math.cos(angle) * 5;
+                            enemy.vy += Math.sin(angle) * 5;
+                        }
+                    });
+                    
+                    if (scale < 15) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        wave.remove();
+                    }
+                };
+                animate();
+                
+                this.showMessage('ENERGY WAVE!');
+            }
+            
+            orbMagnet() {
+                // Attract all orbs to player
+                this.entities.orbs.forEach(orb => {
+                    const dx = this.player.x - orb.x;
+                    const dy = this.player.y - orb.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    
+                    orb.x += (dx / dist) * 10;
+                    orb.y += (dy / dist) * 10;
+                    orb.element.style.left = orb.x + 'px';
+                    orb.element.style.top = orb.y + 'px';
+                    orb.element.style.boxShadow = '0 0 30px #0ff';
+                });
+                
+                this.showMessage('ORB MAGNET!');
+            }
+            
+            useTimeStop() {
+                console.log('useTimeStop called, available:', this.permanentAbilities.timeStop.available, 'dimension:', this.dimension);
+                const now = Date.now();
+                
+                if (!this.permanentAbilities.timeStop.available) {
+                    console.log('Time Stop not available yet');
+                    return;
+                }
+                
+                if (now - this.permanentAbilities.timeStop.lastUsed < this.permanentAbilities.timeStop.cooldown) {
+                    console.log('Time Stop on cooldown');
+                    return;
+                }
+                
+                if (this.permanentAbilities.timeStop.active) {
+                    console.log('Time Stop already active');
+                    return;
+                }
+                
+                console.log('Activating Time Stop!');
+                this.permanentAbilities.timeStop.lastUsed = now;
+                this.permanentAbilities.timeStop.active = true;
+                
+                // Dimension-specific time stop effects
+                if (this.dimension === 4) {
+                    // Basic time freeze
+                    this.basicTimeStop();
+                } else if (this.dimension === 5) {
+                    // Parallel time manipulation
+                    this.parallelTimeStop();
+                } else if (this.dimension === 6) {
+                    // Quantum time control
+                    this.quantumTimeStop();
+                } else if (this.dimension === 7) {
+                    // Probability time field
+                    this.probabilityTimeStop();
+                } else if (this.dimension === 8) {
+                    // Chaos time distortion
+                    this.chaosTimeStop();
+                } else if (this.dimension === 9) {
+                    // Infinite time control
+                    this.infiniteTimeStop();
+                }
+                
+                setTimeout(() => {
+                    this.permanentAbilities.timeStop.active = false;
+                    this.restoreTimeFlow();
+                    console.log('Time Stop ended, now available again!');
+                }, this.permanentAbilities.timeStop.duration);
+            }
+            
+            basicTimeStop() {
+                this.entities.enemyBullets.forEach(bullet => {
+                    bullet.frozen = true;
+                    bullet.element.style.opacity = '0.3';
+                });
+                this.entities.enemies.forEach(enemy => {
+                    enemy.frozen = true;
+                    enemy.element.style.filter = 'sepia(1) hue-rotate(200deg)';
+                });
+                this.showMessage('TIME FROZEN!');
+            }
+            
+            parallelTimeStop() {
+                // Stop time in multiple reality layers
+                this.entities.enemyBullets.forEach(bullet => {
+                    bullet.frozen = true;
+                    bullet.element.style.opacity = '0.2';
+                    bullet.element.style.filter = 'blur(2px)';
+                });
+                this.entities.enemies.forEach(enemy => {
+                    enemy.frozen = true;
+                    enemy.element.style.filter = 'sepia(1) hue-rotate(270deg) blur(1px)';
+                    enemy.element.style.transform = 'scale(0.8)';
+                });
+                // Create time ripples
+                for (let i = 0; i < 3; i++) {
+                    setTimeout(() => this.createTimeRipple(), i * 300);
+                }
+                this.showMessage('PARALLEL TIME FREEZE!');
+            }
+            
+            quantumTimeStop() {
+                // Quantum superposition time stop
+                this.entities.enemyBullets.forEach(bullet => {
+                    bullet.frozen = true;
+                    bullet.element.style.opacity = Math.random() > 0.5 ? '0.1' : '0.4';
+                    bullet.element.style.filter = 'hue-rotate(' + (Math.random() * 360) + 'deg)';
+                });
+                this.entities.enemies.forEach(enemy => {
+                    enemy.frozen = true;
+                    enemy.element.style.filter = 'invert(1) hue-rotate(' + (Math.random() * 360) + 'deg)';
+                    enemy.element.style.animation = 'quantumFlicker 0.1s infinite';
+                });
+                this.showMessage('QUANTUM TIME LOCK!');
+            }
+            
+            probabilityTimeStop() {
+                // Maybe stop time, maybe not
+                const stopChance = Math.random();
+                if (stopChance < 0.3) {
+                    // Time reversal
+                    this.entities.enemyBullets.forEach(bullet => {
+                        bullet.vy *= -0.5;
+                        bullet.vx *= -0.5;
+                        bullet.element.style.filter = 'hue-rotate(180deg) brightness(2)';
+                    });
+                    this.showMessage('TIME REVERSAL!');
+                } else if (stopChance < 0.7) {
+                    // Normal time stop but with random effects
+                    this.basicTimeStop();
+                    // Random enemy teleportation during freeze
+                    setTimeout(() => {
+                        this.entities.enemies.forEach(enemy => {
+                            if (Math.random() < 0.3) {
+                                enemy.x = Math.random() * window.innerWidth;
+                                enemy.y = Math.random() * window.innerHeight;
+                            }
+                        });
+                    }, 1500);
+                    this.showMessage('PROBABILITY TIME STOP!');
+                } else {
+                    // Time acceleration for player
+                    this.player.fireRate *= 5;
+                    setTimeout(() => this.player.fireRate /= 5, 2000);
+                    this.showMessage('TIME ACCELERATION!');
+                }
+            }
+            
+            chaosTimeStop() {
+                // Chaos time effects
+                this.entities.enemyBullets.forEach(bullet => {
+                    const effect = Math.random();
+                    if (effect < 0.33) {
+                        bullet.frozen = true;
+                        bullet.element.style.filter = 'invert(1) contrast(5)';
+                    } else if (effect < 0.66) {
+                        bullet.vy *= -2;
+                        bullet.vx = (Math.random() - 0.5) * 10;
+                        bullet.element.style.filter = 'hue-rotate(' + (Date.now() % 360) + 'deg)';
+                    } else {
+                        bullet.element.style.display = 'none';
+                        setTimeout(() => {
+                            if (bullet.element) bullet.element.style.display = 'block';
+                        }, Math.random() * 2000);
+                    }
+                });
+                this.entities.enemies.forEach(enemy => {
+                    const chaosEffect = Math.random();
+                    if (chaosEffect < 0.25) {
+                        enemy.frozen = true;
+                    } else if (chaosEffect < 0.5) {
+                        enemy.vx *= -3;
+                        enemy.vy *= -3;
+                    } else if (chaosEffect < 0.75) {
+                        enemy.element.style.transform = 'rotate(' + (Math.random() * 360) + 'deg) scale(' + (0.5 + Math.random()) + ')';
+                    } else {
+                        enemy.x = Math.random() * window.innerWidth;
+                        enemy.y = Math.random() * window.innerHeight;
+                    }
+                });
+                this.showMessage('CHAOS TIME STORM!');
+            }
+            
+            infiniteTimeStop() {
+                // Ultimate time control
+                this.entities.enemyBullets.forEach(bullet => {
+                    bullet.frozen = true;
+                    bullet.element.style.opacity = '0.05';
+                    bullet.element.style.filter = 'blur(3px) brightness(0.1)';
+                });
+                this.entities.enemies.forEach(enemy => {
+                    enemy.frozen = true;
+                    enemy.element.style.opacity = '0.1';
+                    enemy.element.style.filter = 'grayscale(1) blur(2px)';
+                });
+                
+                // Create infinite time field effect
+                const timeField = document.createElement('div');
+                timeField.style.position = 'fixed';
+                timeField.style.top = '0';
+                timeField.style.left = '0';
+                timeField.style.width = '100%';
+                timeField.style.height = '100%';
+                timeField.style.background = 'radial-gradient(circle at ' + this.player.x + 'px ' + this.player.y + 'px, rgba(255,255,0,0.1) 0%, transparent 50%)';
+                timeField.style.pointerEvents = 'none';
+                timeField.style.zIndex = '999';
+                document.body.appendChild(timeField);
+                
+                setTimeout(() => timeField.remove(), this.abilities.timeStop.duration);
+                
+                // Player becomes temporarily omnipotent
+                const originalFireRate = this.player.fireRate;
+                this.player.fireRate = 10;
+                this.player.invulnerable = true;
+                
+                setTimeout(() => {
+                    this.player.fireRate = originalFireRate;
+                    this.player.invulnerable = false;
+                }, this.permanentAbilities.timeStop.duration);
+                
+                this.showMessage('INFINITE TIME DOMINION!');
+            }
+            
+            restoreTimeFlow() {
+                this.entities.enemyBullets.forEach(bullet => {
+                    if (bullet.element) {
+                        bullet.frozen = false;
+                        bullet.element.style.opacity = '1';
+                        bullet.element.style.filter = '';
+                    }
+                });
+                this.entities.enemies.forEach(enemy => {
+                    if (enemy.element) {
+                        enemy.frozen = false;
+                        enemy.element.style.filter = '';
+                        enemy.element.style.opacity = '1';
+                        enemy.element.style.transform = '';
+                        enemy.element.style.animation = '';
+                    }
+                });
+            }
+            
+            createTimeRipple() {
+                const ripple = document.createElement('div');
+                ripple.style.position = 'absolute';
+                ripple.style.left = this.player.x + 'px';
+                ripple.style.top = this.player.y + 'px';
+                ripple.style.width = '20px';
+                ripple.style.height = '20px';
+                ripple.style.border = '2px solid rgba(255, 255, 0, 0.6)';
+                ripple.style.borderRadius = '50%';
+                ripple.style.transform = 'translate(-50%, -50%)';
+                ripple.style.pointerEvents = 'none';
+                ripple.style.zIndex = '998';
+                document.body.appendChild(ripple);
+                
+                let scale = 1;
+                const animate = () => {
+                    scale += 0.1;
+                    ripple.style.transform = 'translate(-50%, -50%) scale(' + scale + ')';
+                    ripple.style.opacity = Math.max(0, 1 - scale / 10);
+                    
+                    if (scale < 10) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        ripple.remove();
+                    }
+                };
+                animate();
+            }
+            
+            useTeleport() {
+                console.log('useTeleport called, available:', this.permanentAbilities.teleport.available, 'dimension:', this.dimension);
+                const now = Date.now();
+                
+                if (!this.permanentAbilities.teleport.available) {
+                    console.log('Teleport not available yet');
+                    return;
+                }
+                
+                if (now - this.permanentAbilities.teleport.lastUsed < this.permanentAbilities.teleport.cooldown) {
+                    console.log('Teleport on cooldown');
+                    return;
+                }
+                
+                console.log('Activating Teleport!');
+                this.permanentAbilities.teleport.lastUsed = now;
+                
+                // Dimension-specific teleport effects
+                if (this.dimension === 5) {
+                    this.basicTeleport();
+                } else if (this.dimension === 6) {
+                    this.quantumTeleport();
+                } else if (this.dimension === 7) {
+                    this.probabilityTeleport();
+                } else if (this.dimension === 8) {
+                    this.chaosTeleport();
+                } else if (this.dimension === 9) {
+                    this.infiniteTeleport();
+                }
+            }
+            
+            basicTeleport() {
+                // Simple teleport to mouse position
+                const oldX = this.player.x;
+                const oldY = this.player.y;
+                
+                this.player.x = this.mouseX;
+                this.player.y = this.mouseY;
+                this.player.targetX = this.mouseX;
+                this.player.targetY = this.mouseY;
+                
+                // Teleport effect
+                this.createTeleportEffect(oldX, oldY, this.player.x, this.player.y);
+                this.showMessage('TELEPORT!');
+            }
+            
+            quantumTeleport() {
+                // Quantum superposition teleport - exist in multiple places briefly
+                const positions = [
+                    {x: this.mouseX, y: this.mouseY},
+                    {x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight},
+                    {x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight}
+                ];
+                
+                // Create quantum ghosts
+                positions.forEach((pos, index) => {
+                    if (index > 0) {
+                        this.createQuantumGhost(pos.x, pos.y, 1000);
+                    }
+                });
+                
+                // Teleport to intended position after brief delay
+                setTimeout(() => {
+                    const oldX = this.player.x;
+                    const oldY = this.player.y;
+                    
+                    this.player.x = positions[0].x;
+                    this.player.y = positions[0].y;
+                    this.player.targetX = positions[0].x;
+                    this.player.targetY = positions[0].y;
+                    
+                    this.createTeleportEffect(oldX, oldY, this.player.x, this.player.y, 'quantum');
+                }, 200);
+                
+                this.showMessage('QUANTUM TELEPORT!');
+            }
+            
+            probabilityTeleport() {
+                // Maybe teleport where intended, maybe somewhere random
+                const chance = Math.random();
+                let targetX, targetY;
+                
+                if (chance < 0.3) {
+                    // Teleport to random location
+                    targetX = Math.random() * window.innerWidth;
+                    targetY = Math.random() * window.innerHeight;
+                    this.showMessage('RANDOM TELEPORT!');
+                } else if (chance < 0.6) {
+                    // Teleport to mouse position
+                    targetX = this.mouseX;
+                    targetY = this.mouseY;
+                    this.showMessage('INTENDED TELEPORT!');
+                } else {
+                    // Multi-teleport chain
+                    this.chainTeleport(3);
+                    return;
+                }
+                
+                const oldX = this.player.x;
+                const oldY = this.player.y;
+                
+                this.player.x = targetX;
+                this.player.y = targetY;
+                this.player.targetX = targetX;
+                this.player.targetY = targetY;
+                
+                this.createTeleportEffect(oldX, oldY, this.player.x, this.player.y, 'probability');
+            }
+            
+            chaosTeleport() {
+                // Chaotic teleport with random effects
+                const effects = ['swap', 'multiply', 'dimension', 'enemy', 'time'];
+                const effect = effects[Math.floor(Math.random() * effects.length)];
+                
+                const oldX = this.player.x;
+                const oldY = this.player.y;
+                
+                switch(effect) {
+                    case 'swap':
+                        // Swap with random enemy
+                        if (this.entities.enemies.length > 0) {
+                            const enemy = this.entities.enemies[Math.floor(Math.random() * this.entities.enemies.length)];
+                            const tempX = enemy.x;
+                            const tempY = enemy.y;
+                            enemy.x = this.player.x;
+                            enemy.y = this.player.y;
+                            this.player.x = tempX;
+                            this.player.y = tempY;
+                            this.showMessage('CHAOS SWAP!');
+                        } else {
+                            this.basicTeleport();
+                        }
+                        break;
+                    case 'multiply':
+                        // Create temporary player copies
+                        for (let i = 0; i < 5; i++) {
+                            this.createPlayerCopy(Math.random() * window.innerWidth, Math.random() * window.innerHeight, 2000);
+                        }
+                        this.basicTeleport();
+                        this.showMessage('CHAOS MULTIPLY!');
+                        break;
+                    case 'dimension':
+                        // Brief dimensional phase
+                        this.player.x = this.mouseX;
+                        this.player.y = this.mouseY;
+                        this.player.invulnerable = true;
+                        document.getElementById('player').style.opacity = '0.3';
+                        setTimeout(() => {
+                            this.player.invulnerable = false;
+                            document.getElementById('player').style.opacity = '1';
+                        }, 1500);
+                        this.showMessage('DIMENSIONAL PHASE!');
+                        break;
+                    case 'enemy':
+                        // Teleport and destroy nearby enemies
+                        this.player.x = this.mouseX;
+                        this.player.y = this.mouseY;
+                        this.entities.enemies.forEach(enemy => {
+                            const dist = Math.sqrt(
+                                Math.pow(enemy.x - this.player.x, 2) + 
+                                Math.pow(enemy.y - this.player.y, 2)
+                            );
+                            if (dist < 100) {
+                                this.hitEnemy(enemy, true);
+                            }
+                        });
+                        this.showMessage('CHAOS ANNIHILATION!');
+                        break;
+                    case 'time':
+                        // Teleport through time
+                        this.player.x = this.mouseX;
+                        this.player.y = this.mouseY;
+                        this.useTimeStop();
+                        this.showMessage('CHAOS TIME-PORT!');
+                        break;
+                }
+                
+                this.createTeleportEffect(oldX, oldY, this.player.x, this.player.y, 'chaos');
+            }
+            
+            infiniteTeleport() {
+                // Ultimate teleport - omnipresence
+                const oldX = this.player.x;
+                const oldY = this.player.y;
+                
+                // Create infinite presence effect
+                for (let i = 0; i < 10; i++) {
+                    const angle = (i / 10) * Math.PI * 2;
+                    const radius = 100 + i * 20;
+                    const ghostX = this.mouseX + Math.cos(angle) * radius;
+                    const ghostY = this.mouseY + Math.sin(angle) * radius;
+                    
+                    if (ghostX >= 0 && ghostX <= window.innerWidth && ghostY >= 0 && ghostY <= window.innerHeight) {
+                        this.createQuantumGhost(ghostX, ghostY, 3000, 'infinite');
+                    }
+                }
+                
+                // Main teleport
+                this.player.x = this.mouseX;
+                this.player.y = this.mouseY;
+                this.player.targetX = this.mouseX;
+                this.player.targetY = this.mouseY;
+                
+                // Infinite field effect
+                const field = document.createElement('div');
+                field.style.position = 'fixed';
+                field.style.top = '0';
+                field.style.left = '0';
+                field.style.width = '100%';
+                field.style.height = '100%';
+                field.style.background = 'radial-gradient(circle at ' + this.player.x + 'px ' + this.player.y + 'px, rgba(0,255,255,0.2) 0%, transparent 30%)';
+                field.style.pointerEvents = 'none';
+                field.style.zIndex = '997';
+                field.style.animation = 'infinityPulse 1s ease-in-out 3';
+                document.body.appendChild(field);
+                
+                setTimeout(() => field.remove(), 3000);
+                
+                // Destroy all enemies in a large radius
+                this.entities.enemies.forEach(enemy => {
+                    const dist = Math.sqrt(
+                        Math.pow(enemy.x - this.player.x, 2) + 
+                        Math.pow(enemy.y - this.player.y, 2)
+                    );
+                    if (dist < 200) {
+                        this.hitEnemy(enemy, true);
+                    }
+                });
+                
+                this.createTeleportEffect(oldX, oldY, this.player.x, this.player.y, 'infinite');
+                this.showMessage('INFINITE OMNIPRESENCE!');
+            }
+            
+            createTeleportEffect(fromX, fromY, toX, toY, type = 'basic') {
+                // Pre-teleport targeting preview
+                this.showTeleportPreview(toX, toY);
+                
+                // Create teleport beam connecting old and new position
+                const beam = document.createElement('div');
+                const dx = toX - fromX;
+                const dy = toY - fromY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                const angle = Math.atan2(dy, dx);
+                
+                beam.style.position = 'absolute';
+                beam.style.left = fromX + 'px';
+                beam.style.top = (fromY - 3) + 'px';
+                beam.style.width = distance + 'px';
+                beam.style.height = '6px';
+                beam.style.background = 'linear-gradient(90deg, rgba(0,255,255,1) 0%, rgba(255,255,255,1) 50%, rgba(255,0,255,1) 100%)';
+                beam.style.transformOrigin = '0 50%';
+                beam.style.transform = 'rotate(' + angle + 'rad)';
+                beam.style.pointerEvents = 'none';
+                beam.style.zIndex = '997';
+                beam.style.boxShadow = '0 0 15px #0ff, 0 0 30px #0ff';
+                beam.style.animation = 'teleportBeam 0.6s ease-out forwards';
+                document.body.appendChild(beam);
+                
+                // Exit effect (larger and more dramatic)
+                const exitEffect = document.createElement('div');
+                exitEffect.style.position = 'absolute';
+                exitEffect.style.left = (fromX - 50) + 'px';
+                exitEffect.style.top = (fromY - 50) + 'px';
+                exitEffect.style.width = '100px';
+                exitEffect.style.height = '100px';
+                exitEffect.style.borderRadius = '50%';
+                exitEffect.style.pointerEvents = 'none';
+                exitEffect.style.zIndex = '996';
+                exitEffect.style.border = '4px solid #0ff';
+                exitEffect.style.background = 'radial-gradient(circle, rgba(0,255,255,0.3), transparent 70%)';
+                exitEffect.style.boxShadow = '0 0 40px #0ff, inset 0 0 40px #0ff';
+                
+                // Entry effect (bright and attention-grabbing)
+                const entryEffect = document.createElement('div');
+                entryEffect.style.position = 'absolute';
+                entryEffect.style.left = (toX - 50) + 'px';
+                entryEffect.style.top = (toY - 50) + 'px';
+                entryEffect.style.width = '100px';
+                entryEffect.style.height = '100px';
+                entryEffect.style.borderRadius = '50%';
+                entryEffect.style.pointerEvents = 'none';
+                entryEffect.style.zIndex = '996';
+                entryEffect.style.border = '4px solid #f0f';
+                entryEffect.style.background = 'radial-gradient(circle, rgba(255,0,255,0.4), transparent 70%)';
+                entryEffect.style.boxShadow = '0 0 50px #f0f, inset 0 0 50px #f0f';
+                
+                // Enhanced targeting reticle with crosshairs
+                const reticle = document.createElement('div');
+                reticle.style.position = 'absolute';
+                reticle.style.left = (toX - 35) + 'px';
+                reticle.style.top = (toY - 35) + 'px';
+                reticle.style.width = '70px';
+                reticle.style.height = '70px';
+                reticle.style.border = '3px solid #ff0';
+                reticle.style.borderRadius = '50%';
+                reticle.style.pointerEvents = 'none';
+                reticle.style.zIndex = '998';
+                reticle.style.boxShadow = '0 0 20px #ff0';
+                reticle.innerHTML = '<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 30px; height: 3px; background: #ff0; box-shadow: 0 0 10px #ff0;"></div><div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 3px; height: 30px; background: #ff0; box-shadow: 0 0 10px #ff0;"></div>';
+                document.body.appendChild(reticle);
+                
+                // Add destination indicator text
+                const indicator = document.createElement('div');
+                indicator.style.position = 'absolute';
+                indicator.style.left = (toX - 30) + 'px';
+                indicator.style.top = (toY - 60) + 'px';
+                indicator.style.color = '#ff0';
+                indicator.style.fontSize = '14px';
+                indicator.style.fontWeight = 'bold';
+                indicator.style.textAlign = 'center';
+                indicator.style.pointerEvents = 'none';
+                indicator.style.zIndex = '999';
+                indicator.style.textShadow = '0 0 10px #ff0';
+                indicator.style.width = '60px';
+                indicator.textContent = 'TELEPORT';
+                document.body.appendChild(indicator);
+                
+                switch(type) {
+                    case 'quantum':
+                        exitEffect.style.background = 'radial-gradient(circle, rgba(255,0,255,0.6), transparent)';
+                        entryEffect.style.background = 'radial-gradient(circle, rgba(0,255,255,0.6), transparent)';
+                        beam.style.background = 'linear-gradient(90deg, rgba(255,0,255,1), rgba(0,255,255,1), rgba(255,0,255,1))';
+                        break;
+                    case 'probability':
+                        exitEffect.style.background = 'radial-gradient(circle, rgba(255,255,0,0.6), transparent)';
+                        entryEffect.style.background = 'radial-gradient(circle, rgba(255,255,0,0.6), transparent)';
+                        beam.style.background = 'linear-gradient(90deg, rgba(255,255,0,1), rgba(255,0,0,1), rgba(255,255,0,1))';
+                        break;
+                    case 'chaos':
+                        exitEffect.style.background = 'radial-gradient(circle, rgba(255,0,0,0.6), transparent)';
+                        entryEffect.style.background = 'radial-gradient(circle, rgba(255,0,0,0.6), transparent)';
+                        exitEffect.style.animation = 'chaosGlitch 0.5s';
+                        entryEffect.style.animation = 'chaosGlitch 0.5s';
+                        beam.style.background = 'linear-gradient(90deg, rgba(255,0,0,1), rgba(0,0,0,1), rgba(255,0,0,1))';
+                        break;
+                    case 'infinite':
+                        exitEffect.style.background = 'radial-gradient(circle, rgba(255,255,255,0.8), transparent)';
+                        entryEffect.style.background = 'radial-gradient(circle, rgba(255,255,255,0.8), transparent)';
+                        beam.style.background = 'linear-gradient(90deg, rgba(255,255,255,1), rgba(255,255,0,1), rgba(255,255,255,1))';
+                        beam.style.height = '8px';
+                        break;
+                    default:
+                        exitEffect.style.background = 'radial-gradient(circle, rgba(0,255,255,0.6), transparent)';
+                        entryEffect.style.background = 'radial-gradient(circle, rgba(0,255,255,0.6), transparent)';
+                }
+                
+                exitEffect.style.animation += ' teleportShrink 0.5s ease-out forwards';
+                entryEffect.style.animation += ' teleportGrow 0.5s ease-out forwards';
+                reticle.style.animation = 'reticleTarget 0.5s ease-out forwards';
+                
+                document.body.appendChild(exitEffect);
+                document.body.appendChild(entryEffect);
+                
+                setTimeout(() => {
+                    beam.remove();
+                    exitEffect.remove();
+                    entryEffect.remove();
+                    reticle.remove();
+                    indicator.remove();
+                }, 800);
+            }
+            
+            showTeleportPreview(x, y) {
+                // Show preview of where player will teleport before actually teleporting
+                const preview = document.createElement('div');
+                preview.style.position = 'absolute';
+                preview.style.left = (x - 30) + 'px';
+                preview.style.top = (y - 30) + 'px';
+                preview.style.width = '60px';
+                preview.style.height = '60px';
+                preview.style.border = '2px dashed #0ff';
+                preview.style.borderRadius = '50%';
+                preview.style.background = 'rgba(0, 255, 255, 0.2)';
+                preview.style.pointerEvents = 'none';
+                preview.style.zIndex = '995';
+                preview.style.animation = 'teleportPreview 0.3s ease-in-out';
+                document.body.appendChild(preview);
+                
+                setTimeout(() => preview.remove(), 300);
+            }
+            
+            createQuantumGhost(x, y, duration, type = 'quantum') {
+                const ghost = document.createElement('div');
+                ghost.className = 'player';
+                ghost.innerHTML = '<div class="player-ring"></div><div class="player-core"></div>';
+                ghost.style.left = x + 'px';
+                ghost.style.top = y + 'px';
+                ghost.style.opacity = type === 'infinite' ? '0.3' : '0.5';
+                ghost.style.filter = type === 'infinite' ? 'brightness(2) hue-rotate(180deg)' : 'hue-rotate(180deg)';
+                ghost.style.pointerEvents = 'none';
+                ghost.style.zIndex = '499';
+                document.body.appendChild(ghost);
+                
+                setTimeout(() => ghost.remove(), duration);
+            }
+            
+            createPlayerCopy(x, y, duration) {
+                const copy = document.createElement('div');
+                copy.className = 'player';
+                copy.innerHTML = '<div class="player-ring"></div><div class="player-core"></div>';
+                copy.style.left = x + 'px';
+                copy.style.top = y + 'px';
+                copy.style.opacity = '0.7';
+                copy.style.filter = 'hue-rotate(120deg)';
+                copy.style.pointerEvents = 'none';
+                copy.style.zIndex = '499';
+                document.body.appendChild(copy);
+                
+                // Copies can shoot
+                const copyInterval = setInterval(() => {
+                    if (this.entities.enemies.length > 0) {
+                        const nearestEnemy = this.entities.enemies.reduce((nearest, enemy) => {
+                            const distToCopy = Math.sqrt(
+                                Math.pow(enemy.x - x, 2) + 
+                                Math.pow(enemy.y - y, 2)
+                            );
+                            const distToNearest = nearest ? Math.sqrt(
+                                Math.pow(nearest.x - x, 2) + 
+                                Math.pow(nearest.y - y, 2)
+                            ) : Infinity;
+                            
+                            return distToCopy < distToNearest ? enemy : nearest;
+                        }, null);
+                        
+                        if (nearestEnemy) {
+                            const dx = nearestEnemy.x - x;
+                            const dy = nearestEnemy.y - y;
+                            const dist = Math.sqrt(dx * dx + dy * dy);
+                            this.createBullet(x, y, (dx / dist) * 10, (dy / dist) * 10);
+                        }
+                    }
+                }, 300);
+                
+                setTimeout(() => {
+                    copy.remove();
+                    clearInterval(copyInterval);
+                }, duration);
+            }
+            
+            chainTeleport(count) {
+                if (count <= 0) return;
+                
+                const randomX = Math.random() * window.innerWidth;
+                const randomY = Math.random() * window.innerHeight;
+                const oldX = this.player.x;
+                const oldY = this.player.y;
+                
+                this.player.x = randomX;
+                this.player.y = randomY;
+                this.player.targetX = randomX;
+                this.player.targetY = randomY;
+                
+                this.createTeleportEffect(oldX, oldY, randomX, randomY, 'probability');
+                
+                if (count > 1) {
+                    setTimeout(() => this.chainTeleport(count - 1), 200);
+                } else {
+                    // Final teleport to mouse position
+                    setTimeout(() => {
+                        const finalOldX = this.player.x;
+                        const finalOldY = this.player.y;
+                        this.player.x = this.mouseX;
+                        this.player.y = this.mouseY;
+                        this.player.targetX = this.mouseX;
+                        this.player.targetY = this.mouseY;
+                        this.createTeleportEffect(finalOldX, finalOldY, this.mouseX, this.mouseY, 'probability');
+                        this.showMessage('CHAIN TELEPORT COMPLETE!');
+                    }, 200);
+                }
+            }
+            
+            // Removed old useCollectiblePower - now using queue system
+            
+            activateGhostMode() {
+                // Basic ghost mode - immune to enemy bullets and collisions
+                this.player.ghostMode = true;
+                const playerEl = document.getElementById('player');
+                playerEl.style.opacity = '0.5';
+                playerEl.style.filter = 'hue-rotate(120deg) brightness(1.5)';
+                playerEl.style.boxShadow = '0 0 20px #0f0';
+                
+                this.showMessage('GHOST MODE!');
+                
+                setTimeout(() => {
+                    this.endGhostMode();
+                }, 5000); // 5 seconds
+            }
+            
+            activateDarkGhostMode() {
+                // Dark ghost mode - immune + destroys enemies on contact
+                this.player.darkGhostMode = true;
+                this.player.invulnerable = true;
+                
+                const playerEl = document.getElementById('player');
+                playerEl.style.opacity = '0.3';
+                playerEl.style.filter = 'invert(1) hue-rotate(270deg) brightness(2)';
+                playerEl.style.boxShadow = '0 0 30px #800080';
+                
+                // Create dark aura effect
+                const aura = document.createElement('div');
+                aura.id = 'darkGhostAura';
+                aura.style.position = 'absolute';
+                aura.style.width = '120px';
+                aura.style.height = '120px';
+                aura.style.background = 'radial-gradient(circle, rgba(128,0,128,0.3), transparent)';
+                aura.style.borderRadius = '50%';
+                aura.style.transform = 'translate(-50%, -50%)';
+                aura.style.pointerEvents = 'none';
+                aura.style.zIndex = '499';
+                aura.style.animation = 'darkAuraPulse 1s ease-in-out infinite';
+                document.body.appendChild(aura);
+                
+                this.showMessage('DARK GHOST!');
+                
+                setTimeout(() => {
+                    this.endDarkGhostMode();
+                }, 6000); // 6 seconds
+            }
+            
+            endGhostMode() {
+                this.player.ghostMode = false;
+                const playerEl = document.getElementById('player');
+                playerEl.style.opacity = '1';
+                playerEl.style.filter = '';
+                playerEl.style.boxShadow = '';
+            }
+            
+            endDarkGhostMode() {
+                this.player.darkGhostMode = false;
+                this.player.invulnerable = false;
+                
+                const playerEl = document.getElementById('player');
+                playerEl.style.opacity = '1';
+                playerEl.style.filter = '';
+                playerEl.style.boxShadow = '';
+                
+                const aura = document.getElementById('darkGhostAura');
+                if (aura) aura.remove();
+            }
+            
+            // Spawn collectible power-ups
+            spawnCollectiblePowerUp() {
+                const availableTypes = [];
+                
+                if (this.dimension >= 2) availableTypes.push('screenClear', 'shield');
+                if (this.dimension >= 3) availableTypes.push('ghost', 'rapidFire');
+                if (this.dimension >= 6) availableTypes.push('darkGhost');
+                
+                if (availableTypes.length === 0) return;
+                
+                const type = availableTypes[Math.floor(Math.random() * availableTypes.length)];
+                
+                const powerup = document.createElement('div');
+                powerup.className = `powerup powerup-${type}`;
+                powerup.style.background = this.getPowerUpColor(type);
+                
+                if (this.dimension === 2) {
+                    powerup.style.left = (100 + Math.random() * (window.innerWidth - 200)) + 'px';
+                    powerup.style.top = '-50px';
+                } else {
+                    powerup.style.left = (100 + Math.random() * (window.innerWidth - 200)) + 'px';
+                    powerup.style.top = (100 + Math.random() * (window.innerHeight - 300)) + 'px';
+                }
+                
+                document.body.appendChild(powerup);
+                this.entities.powerups.push({
+                    element: powerup,
+                    type: type,
+                    x: parseFloat(powerup.style.left),
+                    y: parseFloat(powerup.style.top),
+                    vy: this.dimension === 2 ? 1.5 : 0
+                });
+            }
+            
+            getPowerUpColor(type) {
+                switch(type) {
+                    case 'ghost': return 'linear-gradient(45deg, #0f0, #0ff)';
+                    case 'darkGhost': return 'linear-gradient(45deg, #800080, #000)';
+                    case 'screenClear': return 'linear-gradient(45deg, #ff0, #f00)';
+                    case 'shield': return 'linear-gradient(45deg, #00f, #0ff)';
+                    case 'rapidFire': return 'linear-gradient(45deg, #f0f, #ff0)';
+                    default: return 'linear-gradient(45deg, #fff, #0ff)';
+                }
+            }
+
+            setupDimension() {
+                // Clear entities
+                this.clearEntities();
+                
+                // Apply dimension settings
+                const dim = this.dimensions[this.dimension];
+                this.canvas.className = dim.bgClass;
+                document.getElementById('dimensionNum').textContent = this.dimension;
+                document.getElementById('dimDesc').textContent = dim.desc;
+                
+                // Reset player position
+                if (this.dimension === 2) {
+                    this.player.x = window.innerWidth / 2;
+                    this.player.y = window.innerHeight - 150;
+                } else {
+                    this.player.x = window.innerWidth / 2;
+                    this.player.y = window.innerHeight / 2;
+                }
+                
+                // Unlock abilities based on dimension
+                if (this.dimension >= 4) {
+                    this.permanentAbilities.timeStop.available = true;
+                }
+                if (this.dimension >= 5) {
+                    this.permanentAbilities.teleport.available = true;
+                }
+                
+                // Create dimension content
+                this.createDimensionContent();
+                
+                // Start spawning
+                this.startSpawning();
+                
+                // Update HUD for new abilities
+                this.updateHUD();
+                
+                this.showMessage(`DIMENSION ${this.dimension}`);
+            }
+
+            clearEntities() {
+                document.querySelectorAll('.orb, .enemy, .bullet, .enemy-bullet, .powerup, .portal, .cloud, .time-wave, .shield').forEach(el => el.remove());
+                
+                this.entities = {
+                    orbs: [],
+                    enemies: [],
+                    bullets: [],
+                    enemyBullets: [],
+                    powerups: [],
+                    particles: [],
+                    portals: []
+                };
+            }
+
+            createDimensionContent() {
+                if (this.dimension === 2) {
+                    // Create clouds for 2D sky
+                    for (let i = 0; i < 5; i++) {
+                        const cloud = document.createElement('div');
+                        cloud.className = 'cloud';
+                        cloud.style.left = (Math.random() * window.innerWidth) + 'px';
+                        cloud.style.top = (50 + Math.random() * 200) + 'px';
+                        cloud.style.animationDelay = (i * 4) + 's';
+                        document.body.appendChild(cloud);
+                    }
+                } else if (this.dimension === 4) {
+                    // Time waves
+                    for (let i = 0; i < 5; i++) {
+                        const wave = document.createElement('div');
+                        wave.className = 'time-wave';
+                        wave.style.top = (200 + i * 100) + 'px';
+                        wave.style.animationDelay = (i * 0.5) + 's';
+                        document.body.appendChild(wave);
+                    }
+                } else if (this.dimension >= 5) {
+                    // Create portal
+                    const portal = document.createElement('div');
+                    portal.className = 'portal portal-normal';
+                    portal.style.left = (window.innerWidth - 200) + 'px';
+                    portal.style.top = '100px';
+                    document.body.appendChild(portal);
+                    this.entities.portals.push({
+                        element: portal,
+                        x: window.innerWidth - 200,
+                        y: 100
+                    });
+                }
+            }
+
+            startSpawning() {
+                // Clear existing intervals
+                if (this.spawnInterval) clearInterval(this.spawnInterval);
+                if (this.enemyInterval) clearInterval(this.enemyInterval);
+                if (this.powerupInterval) clearInterval(this.powerupInterval);
+                
+                // Spawn orbs
+                this.spawnInterval = setInterval(() => {
+                    if (this.entities.orbs.length < this.orbsNeeded - this.orbsCollected) {
+                        this.spawnOrb();
+                    }
+                }, 3000);
+                
+                // Spawn enemies (more in 2D for better gameplay)
+                const maxEnemies = this.dimension === 2 ? 8 : 5 + this.dimension;
+                const spawnDelay = this.dimension === 2 ? 1500 : 2000 - (this.dimension * 100);
+                
+                this.enemyInterval = setInterval(() => {
+                    if (this.entities.enemies.length < maxEnemies) {
+                        this.spawnEnemy();
+                    }
+                }, spawnDelay);
+                
+                // Spawn powerups
+                this.powerupInterval = setInterval(() => {
+                    if (this.entities.powerups.length < 2) {
+                        if (Math.random() < 0.85) {
+                            this.spawnPowerUp(); // Temporary power-ups (more common)
+                        } else {
+                            this.spawnCollectiblePowerUp(); // Special powers (less common)
+                        }
+                    }
+                }, 8000); // Slower spawn rate
+                
+                // Initial spawns
+                for (let i = 0; i < 3; i++) {
+                    this.spawnOrb();
+                }
+            }
+
+            spawnOrb() {
+                const orb = document.createElement('div');
+                orb.className = 'orb';
+                
+                if (this.dimension === 2) {
+                    // Fall from top
+                    orb.style.left = (100 + Math.random() * (window.innerWidth - 200)) + 'px';
+                    orb.style.top = '-50px';
+                } else {
+                    // Random position
+                    orb.style.left = (100 + Math.random() * (window.innerWidth - 200)) + 'px';
+                    orb.style.top = (100 + Math.random() * (window.innerHeight - 300)) + 'px';
+                }
+                
+                document.body.appendChild(orb);
+                this.entities.orbs.push({
+                    element: orb,
+                    x: parseFloat(orb.style.left),
+                    y: parseFloat(orb.style.top),
+                    vy: this.dimension === 2 ? 2 : 0
+                });
+            }
+
+            spawnEnemy() {
+                const enemy = document.createElement('div');
+                const types = ['2d', '3d', '4d', '5d'];
+                const type = this.dimension === 2 ? '2d' : types[Math.min(this.dimension - 1, 3)];
+                enemy.className = `enemy enemy-${type}`;
+                
+                if (this.dimension === 2) {
+                    // Spawn from top
+                    enemy.style.left = (50 + Math.random() * (window.innerWidth - 100)) + 'px';
+                    enemy.style.top = '-50px';
+                } else {
+                    // Random edges
+                    const side = Math.floor(Math.random() * 4);
+                    switch(side) {
+                        case 0: // Top
+                            enemy.style.left = Math.random() * window.innerWidth + 'px';
+                            enemy.style.top = '-50px';
+                            break;
+                        case 1: // Right
+                            enemy.style.left = (window.innerWidth + 50) + 'px';
+                            enemy.style.top = Math.random() * window.innerHeight + 'px';
+                            break;
+                        case 2: // Bottom
+                            enemy.style.left = Math.random() * window.innerWidth + 'px';
+                            enemy.style.top = (window.innerHeight + 50) + 'px';
+                            break;
+                        case 3: // Left
+                            enemy.style.left = '-50px';
+                            enemy.style.top = Math.random() * window.innerHeight + 'px';
+                            break;
+                    }
+                }
+                
+                document.body.appendChild(enemy);
+                
+                const enemyObj = {
+                    element: enemy,
+                    type: type,
+                    x: parseFloat(enemy.style.left),
+                    y: parseFloat(enemy.style.top),
+                    vx: this.dimension === 2 ? (Math.random() - 0.5) * 2 : (Math.random() - 0.5) * 3,
+                    vy: this.dimension === 2 ? 3 : (Math.random() - 0.5) * 3,
+                    hp: this.dimension === 2 ? 1 : Math.max(1, Math.floor(this.dimension / 2) + 1), // 2D enemies have exactly 1 HP
+                    maxHp: this.dimension === 2 ? 1 : Math.max(1, Math.floor(this.dimension / 2) + 1),
+                    lastShot: 0,
+                    frozen: false
+                };
+                
+// Enemy spawned successfully
+                
+                this.entities.enemies.push(enemyObj);
+            }
+
+            spawnPowerUp() {
+                const types = ['triple', 'shield', 'rapid', 'bomb'];
+                const type = types[Math.floor(Math.random() * types.length)];
+                
+                const powerup = document.createElement('div');
+                powerup.className = `powerup powerup-${type}`;
+                
+                if (this.dimension === 2) {
+                    powerup.style.left = (100 + Math.random() * (window.innerWidth - 200)) + 'px';
+                    powerup.style.top = '-50px';
+                } else {
+                    powerup.style.left = (100 + Math.random() * (window.innerWidth - 200)) + 'px';
+                    powerup.style.top = (100 + Math.random() * (window.innerHeight - 300)) + 'px';
+                }
+                
+                document.body.appendChild(powerup);
+                this.entities.powerups.push({
+                    element: powerup,
+                    type: type,
+                    x: parseFloat(powerup.style.left),
+                    y: parseFloat(powerup.style.top),
+                    vy: this.dimension === 2 ? 1.5 : 0
+                });
+            }
+
+            updatePlayer() {
+                // Smooth movement
+                const dx = this.player.targetX - this.player.x;
+                const dy = this.player.targetY - this.player.y;
+                
+                this.player.vx = dx * 0.15;
+                this.player.vy = dy * 0.15;
+                
+                this.player.x += this.player.vx;
+                this.player.y += this.player.vy;
+                
+                // Bounds
+                this.player.x = Math.max(20, Math.min(window.innerWidth - 20, this.player.x));
+                this.player.y = Math.max(20, Math.min(window.innerHeight - 20, this.player.y));
+                
+                // Update element
+                const playerEl = document.getElementById('player');
+                playerEl.style.left = this.player.x + 'px';
+                playerEl.style.top = this.player.y + 'px';
+            }
+
+            updateEntities() {
+                // Update bullets
+                this.entities.bullets = this.entities.bullets.filter(bullet => {
+                    bullet.y += bullet.vy;
+                    bullet.x += bullet.vx;
+                    
+                    if (this.dimension === 7) {
+                        // Probability dimension - bullets randomly change direction
+                        if (Math.random() < 0.05) {
+                            bullet.vx = (Math.random() - 0.5) * 10;
+                        }
+                    }
+                    
+                    bullet.element.style.left = bullet.x + 'px';
+                    bullet.element.style.top = bullet.y + 'px';
+                    
+                    // Check enemy hits
+                    let hit = false;
+                    for (let i = this.entities.enemies.length - 1; i >= 0 && !hit; i--) {
+                        const enemy = this.entities.enemies[i];
+                        if (!enemy || !enemy.element) continue;
+                        
+                        const dist = Math.sqrt(
+                            Math.pow(bullet.x - (enemy.x + 17), 2) +
+                            Math.pow(bullet.y - (enemy.y + 17), 2)
+                        );
+                        
+                        if (dist < 30) {
+                            hit = true;
+                            
+                            if (bullet.type === 'bomb') {
+                                // Bomb explosion - destroy nearby enemies
+                                this.createExplosion(bullet.x, bullet.y, 100);
+                                // Collect enemies to destroy
+                                const enemiesToDestroy = [];
+                                for (let j = 0; j < this.entities.enemies.length; j++) {
+                                    const nearbyEnemy = this.entities.enemies[j];
+                                    const bombDist = Math.sqrt(
+                                        Math.pow(bullet.x - (nearbyEnemy.x + 17), 2) +
+                                        Math.pow(bullet.y - (nearbyEnemy.y + 17), 2)
+                                    );
+                                    if (bombDist < 80) {
+                                        enemiesToDestroy.push(j);
+                                    }
+                                }
+                                // Remove enemies in reverse order to maintain indices
+                                for (let k = enemiesToDestroy.length - 1; k >= 0; k--) {
+                                    const enemyIndex = enemiesToDestroy[k];
+                                    const enemyToDestroy = this.entities.enemies[enemyIndex];
+                                    this.destroyEnemy(enemyToDestroy);
+                                    this.entities.enemies.splice(enemyIndex, 1);
+                                }
+                            } else {
+                                // Regular hit - immediate effect
+                                enemy.hp--;
+                                
+                                // Always create hit explosion
+                                this.createExplosion(enemy.x + 17, enemy.y + 17, 40);
+                                
+                                if (enemy.hp <= 0) {
+                                    // Enemy dies immediately - force removal
+                                    this.createExplosion(enemy.x + 17, enemy.y + 17, 60);
+                                    enemy.element.remove();
+                                    this.score += 50 * this.dimension;
+                                    this.entities.enemies.splice(i, 1);
+                                } else {
+                                    // Flash effect for damaged enemy (immediate)
+                                    enemy.element.style.filter = 'brightness(3) contrast(2)';
+                                    enemy.element.style.transform = 'scale(1.1)';
+                                    setTimeout(() => {
+                                        if (enemy.element) {
+                                            enemy.element.style.filter = '';
+                                            enemy.element.style.transform = '';
+                                        }
+                                    }, 80);
+                                }
+                            }
+                        }
+                    }
+                    
+                    if (hit || bullet.y < -50 || bullet.y > window.innerHeight + 50) {
+                        bullet.element.remove();
+                        return false;
+                    }
+                    return true;
+                });
+                
+                // Update enemy bullets
+                this.entities.enemyBullets = this.entities.enemyBullets.filter(bullet => {
+                    if (!bullet.frozen) {
+                        bullet.y += bullet.vy;
+                        bullet.x += bullet.vx;
+                    }
+                    
+                    bullet.element.style.left = bullet.x + 'px';
+                    bullet.element.style.top = bullet.y + 'px';
+                    
+                    // Check player hit (but not if in ghost mode)
+                    if (!this.player.invulnerable && !this.player.shield && !this.player.ghostMode && !this.player.darkGhostMode) {
+                        const dist = Math.sqrt(
+                            Math.pow(bullet.x - this.player.x, 2) +
+                            Math.pow(bullet.y - this.player.y, 2)
+                        );
+                        
+                        if (dist < 25) {
+                            this.playerHit();
+                            bullet.element.remove();
+                            return false;
+                        }
+                    }
+                    
+                    if (bullet.y > window.innerHeight + 50 || bullet.y < -50) {
+                        bullet.element.remove();
+                        return false;
+                    }
+                    return true;
+                });
+                
+                // Update enemies
+                this.entities.enemies = this.entities.enemies.filter(enemy => {
+                    // Skip if enemy was already removed
+                    if (!enemy || !enemy.element || !enemy.element.parentNode) {
+                        return false;
+                    }
+                    
+                    if (!enemy.frozen) {
+                        enemy.x += enemy.vx;
+                        enemy.y += enemy.vy;
+                    } else {
+                        // Keep position during time stop
+                    }
+                    
+                    // Different behaviors per dimension
+                    if (this.dimension === 2) {
+                        // Just fall
+                    } else if (this.dimension >= 3) {
+                        // Track player slightly
+                        const pdx = this.player.x - enemy.x;
+                        const pdy = this.player.y - enemy.y;
+                        enemy.vx += pdx * 0.001;
+                        enemy.vy += pdy * 0.001;
+                        enemy.vx *= 0.98;
+                        enemy.vy *= 0.98;
+                    }
+                    
+                    if (this.dimension === 8) {
+                        // Chaos - random movement
+                        enemy.vx += (Math.random() - 0.5) * 2;
+                        enemy.vy += (Math.random() - 0.5) * 2;
+                    }
+                    
+                    // Enemy shooting (only if not frozen)
+                    const now = Date.now();
+                    if (this.dimension >= 3 && !enemy.frozen && now - enemy.lastShot > 2000) {
+                        enemy.lastShot = now;
+                        this.enemyShoot(enemy);
+                    }
+                    
+                    enemy.element.style.left = enemy.x + 'px';
+                    enemy.element.style.top = enemy.y + 'px';
+                    
+                    // Remove if off screen
+                    if (enemy.y > window.innerHeight + 100 || 
+                        enemy.x < -100 || enemy.x > window.innerWidth + 100) {
+                        enemy.element.remove();
+                        return false;
+                    }
+                    
+                    // Check collision with player
+                    if (!this.player.invulnerable && !this.player.shield && !this.player.ghostMode && !this.player.darkGhostMode) {
+                        const dist = Math.sqrt(
+                            Math.pow(enemy.x + 17 - this.player.x, 2) +
+                            Math.pow(enemy.y + 17 - this.player.y, 2)
+                        );
+                        
+                        if (dist < 35) {
+                            this.playerHit();
+                        }
+                    } else if (this.player.darkGhostMode) {
+                        // Dark ghost destroys enemies on contact
+                        const dist = Math.sqrt(
+                            Math.pow(enemy.x + 17 - this.player.x, 2) +
+                            Math.pow(enemy.y + 17 - this.player.y, 2)
+                        );
+                        
+                        if (dist < 60) {
+                            this.createExplosion(enemy.x + 17, enemy.y + 17, 60);
+                            if (enemy.element && enemy.element.parentNode) {
+                                enemy.element.remove();
+                            }
+                            this.score += 50 * this.dimension;
+                            return false; // Remove this enemy
+                        }
+                    }
+                    
+                    return enemy && enemy.hp > 0 && enemy.element && enemy.element.parentNode;
+                });
+                
+                // Update orbs
+                this.entities.orbs = this.entities.orbs.filter(orb => {
+                    if (this.dimension === 2) {
+                        orb.y += orb.vy;
+                        orb.element.style.top = orb.y + 'px';
+                    }
+                    
+                    // Check collection
+                    const dist = Math.sqrt(
+                        Math.pow(orb.x + 17 - this.player.x, 2) +
+                        Math.pow(orb.y + 17 - this.player.y, 2)
+                    );
+                    
+                    if (dist < 40) {
+                        this.collectOrb(orb);
+                        return false;
+                    }
+                    
+                    // Remove if off screen
+                    if (orb.y > window.innerHeight + 50) {
+                        orb.element.remove();
+                        return false;
+                    }
+                    
+                    return true;
+                });
+                
+                // Update powerups
+                this.entities.powerups = this.entities.powerups.filter(powerup => {
+                    if (this.dimension === 2) {
+                        powerup.y += powerup.vy;
+                        powerup.element.style.top = powerup.y + 'px';
+                    }
+                    
+                    // Check collection
+                    const dist = Math.sqrt(
+                        Math.pow(powerup.x + 22 - this.player.x, 2) +
+                        Math.pow(powerup.y + 22 - this.player.y, 2)
+                    );
+                    
+                    if (dist < 45) {
+                        this.collectPowerUp(powerup);
+                        return false;
+                    }
+                    
+                    // Remove if off screen
+                    if (powerup.y > window.innerHeight + 50) {
+                        powerup.element.remove();
+                        return false;
+                    }
+                    
+                    return true;
+                });
+            }
+
+            enemyShoot(enemy) {
+                const bullet = document.createElement('div');
+                bullet.className = 'bullet enemy-bullet';
+                bullet.style.left = (enemy.x + 17) + 'px';
+                bullet.style.top = (enemy.y + 35) + 'px';
+                document.body.appendChild(bullet);
+                
+                // Aim at player
+                const dx = this.player.x - enemy.x;
+                const dy = this.player.y - enemy.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                
+                this.entities.enemyBullets.push({
+                    element: bullet,
+                    x: enemy.x + 17,
+                    y: enemy.y + 35,
+                    vx: (dx / dist) * 5,
+                    vy: (dy / dist) * 5,
+                    frozen: false
+                });
+            }
+
+            hitEnemy(enemy, forceKill = false) {
+                if (forceKill) {
+                    enemy.hp = 0;
+                } else {
+                    enemy.hp--;
+                }
+                
+                if (enemy.hp <= 0) {
+                    this.destroyEnemy(enemy);
+                    const index = this.entities.enemies.indexOf(enemy);
+                    if (index > -1) {
+                        this.entities.enemies.splice(index, 1);
+                    }
+                } else {
+                    // Flash effect
+                    enemy.element.style.filter = 'brightness(2)';
+                    setTimeout(() => {
+                        if (enemy.element) enemy.element.style.filter = '';
+                    }, 100);
+                }
+            }
+
+            destroyEnemy(enemy) {
+                this.createExplosion(enemy.x + 17, enemy.y + 17);
+                enemy.element.remove();
+                this.score += 50 * this.dimension;
+                this.updateHUD();
+            }
+
+            createExplosion(x, y, size = 60) {
+                const explosion = document.createElement('div');
+                explosion.className = 'explosion';
+                explosion.style.left = (x - size/2) + 'px';
+                explosion.style.top = (y - size/2) + 'px';
+                explosion.style.width = size + 'px';
+                explosion.style.height = size + 'px';
+                document.body.appendChild(explosion);
+                setTimeout(() => explosion.remove(), 500);
+            }
+
+            collectOrb(orb) {
+                orb.element.remove();
+                this.orbsCollected++;
+                this.score += 100 * this.dimension;
+                this.updateHUD();
+                
+                if (this.orbsCollected >= this.orbsNeeded) {
+                    this.nextDimension();
+                }
+            }
+
+            collectPowerUp(powerup) {
+                powerup.element.remove();
+                
+                // Check if it's a special power for the queue
+                const specialPowers = ['ghost', 'darkGhost', 'screenClear', 'shield', 'rapidFire'];
+                if (specialPowers.includes(powerup.type)) {
+                    this.addSpecialPower(powerup.type);
+                    return;
+                }
+                
+                // Handle temporary power-ups (these activate immediately)
+                switch(powerup.type) {
+                    case 'triple':
+                        this.player.bulletType = 'triple';
+                        setTimeout(() => this.player.bulletType = 'normal', 10000);
+                        this.showMessage('TRIPLE SHOT!');
+                        this.updateTemporaryPowerDisplay(powerup.type);
+                        break;
+                    case 'bomb':
+                        this.player.bulletType = 'bomb';
+                        setTimeout(() => this.player.bulletType = 'normal', 5000);
+                        this.showMessage('BOMB SHOTS!');
+                        this.updateTemporaryPowerDisplay(powerup.type);
+                        break;
+                }
+            }
+
+            activateShield() {
+                this.player.shield = true;
+                
+                const shield = document.createElement('div');
+                shield.className = 'shield';
+                shield.id = 'playerShield';
+                document.body.appendChild(shield);
+                
+                this.showMessage('SHIELD ACTIVE!');
+                
+                setTimeout(() => {
+                    this.player.shield = false;
+                    const shieldEl = document.getElementById('playerShield');
+                    if (shieldEl) shieldEl.remove();
+                }, 8000);
+            }
+
+            playerHit() {
+                if (this.player.invulnerable) return;
+                
+                // In God Level, player doesn't actually lose lives but gets score penalty
+                if (this.isGodLevel) {
+                    this.score = Math.max(0, this.score - 1000);
+                    this.showMessage('GOD POWER WEAKENED! -1000 POINTS!');
+                    
+                    // Brief invulnerability
+                    this.player.invulnerable = true;
+                    const playerEl = document.getElementById('player');
+                    playerEl.style.opacity = '0.5';
+                    
+                    setTimeout(() => {
+                        this.player.invulnerable = false;
+                        playerEl.style.opacity = '1';
+                    }, 1000);
+                    
+                    this.updateHUD();
+                    return;
+                }
+                
+                this.lives--;
+                this.updateHUD();
+                
+                if (this.lives <= 0) {
+                    this.gameOver();
+                } else {
+                    this.player.invulnerable = true;
+                    const playerEl = document.getElementById('player');
+                    
+                    let flashes = 0;
+                    const flashInterval = setInterval(() => {
+                        playerEl.style.opacity = playerEl.style.opacity === '0.3' ? '1' : '0.3';
+                        flashes++;
+                        if (flashes > 10) {
+                            clearInterval(flashInterval);
+                            playerEl.style.opacity = '1';
+                            this.player.invulnerable = false;
+                        }
+                    }, 100);
+                    
+                    this.showMessage('HIT!');
+                }
+            }
+
+            nextDimension() {
+                if (this.dimension < 9) {
+                    this.dimension++;
+                    this.orbsCollected = 0;
+                    this.orbsNeeded = 5 + Math.floor(this.dimension / 2);
+                    
+                    // Clear intervals
+                    if (this.spawnInterval) clearInterval(this.spawnInterval);
+                    if (this.enemyInterval) clearInterval(this.enemyInterval);
+                    if (this.powerupInterval) clearInterval(this.powerupInterval);
+                    
+                    this.setupDimension();
+                } else if (this.dimension === 9 && !this.isGodLevel) {
+                    // Transition to God Level
+                    this.enterGodLevel();
+                } else {
+                    // Already in God Level - collect orbs just gives score
+                    this.orbsCollected = 0;
+                    this.score += 10000; // Bonus for completing a cycle
+                    this.showMessage('CYCLE COMPLETE! +10,000 POINTS!');
+                }
+            }
+
+            updateHUD() {
+                document.getElementById('score').textContent = this.score;
+                document.getElementById('orbs').textContent = `${this.orbsCollected}/${this.orbsNeeded}`;
+                document.getElementById('lives').textContent = '♥'.repeat(Math.max(0, this.lives));
+                document.getElementById('ammo').textContent = this.ammo === -1 ? '∞' : this.ammo;
+                document.getElementById('progress').style.width = `${(this.orbsCollected / this.orbsNeeded) * 100}%`;
+                
+                // Update ability cooldowns
+                this.updateAbilityCooldowns();
+            }
+            
+            updateAbilityCooldowns() {
+                const now = Date.now();
+                
+                // Time Stop (permanent ability)
+                if (this.permanentAbilities.timeStop.available) {
+                    document.getElementById('timeStopStat').style.display = 'flex';
+                    const timeStopRemaining = Math.max(0, this.permanentAbilities.timeStop.cooldown - (now - this.permanentAbilities.timeStop.lastUsed));
+                    const timeStopElement = document.getElementById('timeStopCooldown');
+                    
+                    if (this.permanentAbilities.timeStop.active) {
+                        timeStopElement.textContent = 'ACTIVE';
+                        timeStopElement.style.color = '#ff0';
+                    } else if (timeStopRemaining > 0) {
+                        timeStopElement.textContent = Math.ceil(timeStopRemaining / 1000) + 's';
+                        timeStopElement.style.color = '#f80';
+                    } else {
+                        timeStopElement.textContent = 'Ready';
+                        timeStopElement.style.color = '#0f0';
+                    }
+                } else {
+                    document.getElementById('timeStopStat').style.display = 'none';
+                }
+                
+                // Teleport (permanent ability)
+                if (this.permanentAbilities.teleport.available) {
+                    document.getElementById('teleportStat').style.display = 'flex';
+                    const teleportRemaining = Math.max(0, this.permanentAbilities.teleport.cooldown - (now - this.permanentAbilities.teleport.lastUsed));
+                    const teleportElement = document.getElementById('teleportCooldown');
+                    
+                    if (teleportRemaining > 0) {
+                        teleportElement.textContent = Math.ceil(teleportRemaining / 1000) + 's';
+                        teleportElement.style.color = '#f80';
+                    } else {
+                        teleportElement.textContent = 'Ready';
+                        teleportElement.style.color = '#0f0';
+                    }
+                } else {
+                    document.getElementById('teleportStat').style.display = 'none';
+                }
+                
+                // Special Powers Queue
+                document.getElementById('ghostStat').style.display = 'flex';
+                document.getElementById('ghostCooldown').textContent = this.specialPowerQueue.length;
+                document.getElementById('ghostCooldown').style.color = this.specialPowerQueue.length > 0 ? '#0f0' : '#888';
+                
+                // Hide old dark ghost stat
+                document.getElementById('darkGhostStat').style.display = 'none';
+                
+                // Update ability controls display
+                const abilityControls = document.getElementById('abilityControls');
+                let controlsText = '';
+                if (this.permanentAbilities.timeStop.available) {
+                    controlsText += '⏱️ Q for Time Stop<br>';
+                }
+                if (this.permanentAbilities.teleport.available) {
+                    controlsText += '🌀 E for Teleport<br>';
+                }
+                if (this.specialPowerQueue.length > 0) {
+                    controlsText += '✨ SPACE for Special (' + this.specialPowerQueue.length + ')<br>';
+                }
+                abilityControls.innerHTML = controlsText;
+            }
+
+            updatePowerDisplay() {
+                const display = document.getElementById('powerDisplay');
+                display.innerHTML = '';
+                
+                // Show special power queue
+                const powerIcons = {
+                    'ghost': '👻',
+                    'darkGhost': '🔮',
+                    'screenClear': '💥',
+                    'shield': '🛡️',
+                    'rapidFire': '⚡'
+                };
+                
+                this.specialPowerQueue.forEach((powerType, index) => {
+                    const slot = document.createElement('div');
+                    slot.className = 'power-slot';
+                    if (index === 0) slot.className += ' power-active'; // Highlight next power
+                    slot.innerHTML = powerIcons[powerType];
+                    slot.style.fontSize = '1.5em';
+                    display.appendChild(slot);
+                });
+                
+                // Show queue count
+                if (this.specialPowerQueue.length > 0) {
+                    const countSlot = document.createElement('div');
+                    countSlot.className = 'power-slot';
+                    countSlot.innerHTML = '<small>NEXT</small><br>' + this.specialPowerQueue.length;
+                    countSlot.style.fontSize = '0.8em';
+                    countSlot.style.background = 'rgba(255, 255, 255, 0.1)';
+                    display.appendChild(countSlot);
+                }
+            }
+            
+            updateTemporaryPowerDisplay(type) {
+                const display = document.getElementById('powerDisplay');
+                
+                const slot = document.createElement('div');
+                slot.className = 'power-slot power-active';
+                const icons = {
+                    'triple': '⚡',
+                    'rapid': '🔥',
+                    'bomb': '💣'
+                };
+                slot.textContent = icons[type];
+                display.appendChild(slot);
+                
+                // Remove after duration
+                setTimeout(() => {
+                    if (slot && slot.parentNode) slot.remove();
+                }, 5000);
+            }
+
+            showMessage(text) {
+                const existing = document.querySelector('.message');
+                if (existing) existing.remove();
+                
+                const message = document.createElement('div');
+                message.className = 'message';
+                message.textContent = text;
+                document.body.appendChild(message);
+                setTimeout(() => message.remove(), 2000);
+            }
+
+            gameOver() {
+                // Create smooth game over screen
+                const gameOverModal = document.createElement('div');
+                gameOverModal.className = 'game-over-modal';
+                
+                const finalScore = this.score;
+                const finalDimension = this.dimension;
+                const timePlayedSeconds = Math.floor(this.gameTime / 60); // Rough estimate
+                
+                gameOverModal.innerHTML = `
+                    <div class="game-over-content">
+                        <h1 class="game-over-title">GAME OVER</h1>
+                        <div class="game-over-stats">
+                            <div>🏆 Final Score: <strong>${finalScore.toLocaleString()}</strong></div>
+                            <div>🌌 Reached Dimension: <strong>${finalDimension}D</strong></div>
+                            <div>⏱️ Survival Time: <strong>${Math.floor(timePlayedSeconds / 60)}m ${timePlayedSeconds % 60}s</strong></div>
+                            <div>💫 Orbs Collected: <strong>${this.score / (50 * this.dimension) || 0}</strong></div>
+                        </div>
+                        <div class="game-over-message">
+                            ${this.getGameOverMessage(finalDimension)}
+                        </div>
+                        <p style="color: #888; font-size: 0.9em; margin-top: 30px;">
+                            Returning to start in 5 seconds...
+                        </p>
+                    </div>
+                `;
+                
+                document.body.appendChild(gameOverModal);
+                
+                // Return to start after 5 seconds
+                setTimeout(() => {
+                    gameOverModal.remove();
+                    location.reload();
+                }, 5000);
+            }
+            
+            getGameOverMessage(dimension) {
+                const messages = {
+                    2: "The 2D realm claimed you. Practice makes perfect!",
+                    3: "Space proved too vast. Try mastering 3D movement!", 
+                    4: "Time itself defeated you. Learn to bend reality!",
+                    5: "Split realities overwhelmed you. Master teleportation!",
+                    6: "Quantum mechanics crushed you. Embrace uncertainty!",
+                    7: "Probability failed you. Sometimes chaos wins.",
+                    8: "Chaos consumed you. Few survive this realm.",
+                    9: "The infinite dimensions defeated you. You came so close!",
+                    10: "Even gods can fall. An legendary attempt!"
+                };
+                return messages[dimension] || "The dimensions have bested you. Rise and try again!";
+            }
+
+            victory() {
+                this.showMessage('9D MASTERED! INFINITY ACHIEVED!');
+                document.body.style.animation = 'infinityBreath 1s infinite';
+                setTimeout(() => this.enterGodLevel(), 3000);
+            }
+            
+            enterGodLevel() {
+                this.isGodLevel = true;
+                this.dimension = 10;
+                this.godLevelStartTime = Date.now();
+                this.godLevelDimensionCycle = 2;
+                this.godLevelCycleTimer = 0;
+                this.lives = 999; // Effectively immortal
+                this.orbsCollected = 0;
+                this.orbsNeeded = 3; // Faster cycles
+                
+                // Clear intervals
+                if (this.spawnInterval) clearInterval(this.spawnInterval);
+                if (this.enemyInterval) clearInterval(this.enemyInterval);
+                if (this.powerupInterval) clearInterval(this.powerupInterval);
+                
+                this.setupGodLevel();
+                
+                this.showMessage('🔥 GOD LEVEL UNLOCKED! 🔥<br>YOU ARE IMMORTAL!');
+            }
+            
+            setupGodLevel() {
+                // Apply current cycle dimension settings
+                const dim = this.dimensions[this.godLevelDimensionCycle];
+                this.canvas.className = dim.bgClass + ' dim-god';
+                document.getElementById('dimensionNum').textContent = 'GOD';
+                document.getElementById('dimDesc').textContent = `Cycling through ${dim.name}`;
+                
+                // Start spawning with God Level intensity
+                this.startGodLevelSpawning();
+                
+                // Start dimension cycling
+                this.startDimensionCycling();
+                
+                this.updateHUD();
+            }
+            
+            startGodLevelSpawning() {
+                // Intense spawning for God Level
+                this.spawnInterval = setInterval(() => {
+                    for (let i = 0; i < 2; i++) {
+                        this.spawnOrb();
+                    }
+                }, 2000);
+                
+                this.enemyInterval = setInterval(() => {
+                    const maxEnemies = 12 + this.godLevelDimensionCycle;
+                    if (this.entities.enemies.length < maxEnemies) {
+                        for (let i = 0; i < 3; i++) {
+                            this.spawnEnemy();
+                        }
+                    }
+                }, 1000);
+                
+                this.powerupInterval = setInterval(() => {
+                    if (this.entities.powerups.length < 4) {
+                        if (Math.random() < 0.4) {
+                            this.spawnPowerUp();
+                        } else {
+                            this.spawnCollectiblePowerUp();
+                        }
+                    }
+                }, 4000);
+            }
+            
+            startDimensionCycling() {
+                this.dimensionCycleInterval = setInterval(() => {
+                    this.godLevelDimensionCycle++;
+                    if (this.godLevelDimensionCycle > 9) {
+                        this.godLevelDimensionCycle = 2;
+                    }
+                    
+                    // Apply new dimension visuals
+                    const dim = this.dimensions[this.godLevelDimensionCycle];
+                    this.canvas.className = dim.bgClass + ' dim-god';
+                    document.getElementById('dimDesc').textContent = `Cycling: ${dim.name}`;
+                    
+                    this.showMessage(`DIMENSION SHIFT: ${this.godLevelDimensionCycle}D`);
+                    
+                    // Clear and recreate dimension content
+                    this.clearDimensionEffects();
+                    this.createDimensionContent();
+                }, 15000); // Change dimension every 15 seconds
+            }
+            
+            clearDimensionEffects() {
+                document.querySelectorAll('.cloud, .time-wave, .portal').forEach(el => el.remove());
+            }
+
+            startGameLoop() {
+                const gameLoop = () => {
+                    this.gameTime++;
+                    
+                    this.updatePlayer();
+                    this.updateEntities();
+                    
+                    // Update shield position
+                    const shield = document.getElementById('playerShield');
+                    if (shield) {
+                        shield.style.left = this.player.x + 'px';
+                        shield.style.top = this.player.y + 'px';
+                    }
+                    
+                    // Update dark ghost aura position
+                    const darkAura = document.getElementById('darkGhostAura');
+                    if (darkAura) {
+                        darkAura.style.left = this.player.x + 'px';
+                        darkAura.style.top = this.player.y + 'px';
+                    }
+                    
+                    // Canvas effects
+                    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.02)';
+                    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                    
+                    if (this.dimension >= 6) {
+                        // Quantum particles
+                        for (let i = 0; i < 3; i++) {
+                            this.ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.5})`;
+                            this.ctx.beginPath();
+                            this.ctx.arc(
+                                Math.random() * this.canvas.width,
+                                Math.random() * this.canvas.height,
+                                Math.random() * 3,
+                                0, Math.PI * 2
+                            );
+                            this.ctx.fill();
+                        }
+                    }
+                    
+                    if (this.dimension === 9) {
+                        // Infinity effect
+                        const cx = this.player.x;
+                        const cy = this.player.y;
+                        this.ctx.strokeStyle = 'rgba(255, 255, 0, 0.1)';
+                        
+                        for (let i = 0; i < 10; i++) {
+                            const radius = (this.gameTime + i * 10) % 200;
+                            this.ctx.beginPath();
+                            this.ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+                            this.ctx.stroke();
+                        }
+                    }
+                    
+                    requestAnimationFrame(gameLoop);
+                };
+                
+                gameLoop();
+            }
+        }
+
+        let game = null;
+        
+        // Define startGame function in global scope
+        window.startGame = function() {
+            // Hide instruction modal
+            document.getElementById('instructionModal').classList.add('hidden');
+            
+            // Hide cursor for game
+            document.body.classList.add('game-started');
+            
+            // Start the game
+            game = new DimensionalOdyssey();
+        };
+        
+        // Show instruction modal on page load
+        window.addEventListener('load', () => {
+            document.getElementById('instructionModal').classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
